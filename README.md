@@ -54,6 +54,7 @@ The backend acts as a proxy server to secure API keys and handle CORS. Frontend 
 
 1. **Clone the repository**
 
+```bash
 git clone https://github.com/yourusername/space-dashboard.git
 cd space-dashboard
 
@@ -92,8 +93,6 @@ Open the app
 
 Open index.html in your browser (or serve via Live Server) 🌐
 
----
-
 📡 API Reference & HTTP Methods
 Authentication
 Method	Endpoint	Description
@@ -107,8 +106,6 @@ GET	/api/proxy/weather	city=London	Fetch weather for a city
 GET	/api/proxy/news	N/A	Fetch latest space news
 User Records (CRUD)
 
----
-
 Protected routes requiring X-API-Key and valid session.
 
 Method	Endpoint	Description
@@ -116,7 +113,6 @@ GET	/api/records	Load saved records for user
 POST	/api/records	Save current NASA/Weather/News data
 PUT	/api/records/:id	Update a specific record JSON
 DELETE	/api/records/:id	Delete a record
-
 💡 Key Features
 
 ⏳ Asynchronous Loading: Dashboard shows spinners while fetching data
@@ -128,8 +124,6 @@ DELETE	/api/records/:id	Delete a record
 ensureAuth middleware protects database routes
 
 ensureApiKey adds an extra layer of API security
-
----
 
 📂 Project Structure
 space-dashboard/
@@ -150,4 +144,3 @@ space-dashboard/
 │   └── space.gif
 │
 └── README.md
----
