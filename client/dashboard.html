@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space & Weather Insights Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%2300ffff' opacity='0.3'/><circle cx='50' cy='50' r='20' fill='%23ff6b6b' opacity='0.6'/></svg>">
+</head>
+<body class="dashboard-body">
+  <!-- COSMIC NAVBAR -->
+  <nav class="navbar">
+    <h1>Space Dashboard</h1>
+    <ul>
+      <li><a href="#" onclick="openTab('home')" data-tab="home" class="active">🏠 Home</a></li>
+      <li><a href="#" onclick="openTab('nasa')" data-tab="nasa">🌟 NASA</a></li>
+      <li><a href="#" onclick="openTab('weather')" data-tab="weather">🌤️ Weather</a></li>
+      <li><a href="#" onclick="openTab('news')" data-tab="news">📰 News</a></li>
+      <li><a href="#" onclick="openTab('records')" data-tab="records">💾 Records</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- HOMEPAGE - PROJECT OVERVIEW -->
+    <section id="home" class="tab active">
+      <h2>Space & Weather Insights Dashboard</h2>
+      <p style="text-align:center; color:#b8c1d3; font-size:1.1em; margin-bottom:40px; max-width:800px; margin-left:auto; margin-right:auto;">
+        Explore the universe from your browser. This dashboard aggregates live data from NASA, global weather services, 
+        and space news outlets, offering a unified cosmic experience. Track astronomy images, monitor weather across 
+        the globe, and stay updated on the latest space exploration developments.
+      </p>
+
+      <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:40px;">
+        <div style="background:rgba(255,255,255,0.05); border-radius:15px; padding:20px; max-width:250px; text-align:center;">
+          <h3 style="color:#00ffff; margin-bottom:10px;">🌌 Astronomy</h3>
+          <p style="color:#b8c1d3; font-size:0.95em;">
+            Discover stunning images from NASA’s astronomy archives and stay inspired by the cosmos.
+          </p>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:15px; padding:20px; max-width:250px; text-align:center;">
+          <h3 style="color:#00ffff; margin-bottom:10px;">🌍 Weather</h3>
+          <p style="color:#b8c1d3; font-size:0.95em;">
+            Check real-time weather updates for any city and plan your day with confidence.
+          </p>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:15px; padding:20px; max-width:250px; text-align:center;">
+          <h3 style="color:#00ffff; margin-bottom:10px;">📰 Space News</h3>
+          <p style="color:#b8c1d3; font-size:0.95em;">
+            Stay informed with the latest news in space exploration and scientific discoveries.
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:40px;">
+        <a href="#" onclick="openTab('nasa')" class="cta-button">🚀 Explore the Dashboard</a>
+      </div>
+    </section>
+
+    <!-- NASA SECTION -->
+    <section id="nasa" class="tab">
+      <h2>🌌 Astronomy of the Day</h2>
+      <div id="nasaResult" class="cards-container"></div>
+      <div style="text-align:center; margin:25px 0;">
+        <button onclick="fetchNASA()" class="loading-btn">
+          <span class="loading" id="nasa-loading" style="display:none;"></span>
+          🔄 Refresh NASA
+        </button>
+        <button onclick="saveRecord('nasa')" style="margin-left:15px;">
+          💾 Save NASA Data
+        </button>
+      </div>
+    </section>
+
+    <!-- WEATHER SECTION -->
+    <section id="weather" class="tab">
+      <h2>🌍 Global Weather</h2>
+      <div style="display:flex; gap:15px; justify-content:center; margin-bottom:25px; flex-wrap:wrap;">
+        <input id="cityInput" placeholder="Enter city (e.g., Jaffna, London)" 
+               style="padding:12px 20px; border:1px solid rgba(255,255,255,0.2); border-radius:25px; background:rgba(255,255,255,0.1); color:white; width:250px; font-size:1em; backdrop-filter:blur(10px);">
+        <button onclick="fetchWeather()" class="loading-btn weather-btn">
+          <span class="loading" id="weather-loading" style="display:none;"></span>
+          🌤️ Get Weather
+        </button>
+      </div>
+      <div id="weatherResult" class="weather-card" style="min-height:300px;"></div>
+      <div style="text-align:center; margin-top:25px;">
+        <button onclick="saveRecord('weather')" class="save-btn">
+          💾 Save Weather
+        </button>
+      </div>
+    </section>
+
+    <!-- NEWS SECTION -->
+    <section id="news" class="tab">
+      <h2>📰 Spaceflight News</h2>
+      <div id="newsResult" class="cards-container"></div>
+      <div style="text-align:center; margin:25px 0;">
+        <button onclick="fetchNews()" class="loading-btn news-btn">
+          <span class="loading" id="news-loading" style="display:none;"></span>
+          🔄 Refresh News
+        </button>
+        <button onclick="saveRecord('news')" class="save-btn" style="margin-left:15px;">
+          💾 Save News
+        </button>
+      </div>
+    </section>
+
+    <!-- RECORDS SECTION -->
+    <section id="records" class="tab">
+      <h2>💾 My Cosmic Archive</h2>
+      <div id="recordsList" style="min-height:400px;"></div>
+      <div style="text-align:center; margin:40px 0;">
+        <button onclick="saveRecord('all')" class="save-all-btn">
+          🌌 Save All Current Data
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- COSMIC EDIT MODAL -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>✏️ Edit Space Record</h3>
+      <textarea id="editContent" placeholder="Edit your JSON data here..."></textarea>
+      <div style="text-align:right; margin-top:20px; gap:15px; display:flex; justify-content:flex-end;">
+        <button onclick="closeEdit()" class="cancel-btn">❌ Cancel</button>
+        <button id="saveEditBtn" class="save-edit-btn">💾 Update Record</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Enhanced tab switching with smooth animations
+    function openTab(id) {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.opacity = '0';
+        tab.style.transform = 'translateY(20px)';
+      });
+      const targetTab = document.getElementById(id);
+      targetTab.classList.add('active');
+      setTimeout(() => {
+        targetTab.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        targetTab.style.opacity = '1';
+        targetTab.style.transform = 'translateY(0)';
+      }, 50);
+      document.querySelectorAll('.navbar a').forEach(link => link.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Auto-load initial data
+    window.addEventListener('load', () => {
+      fetchNASA();
+      fetchWeather();
+      fetchNews();
+      loadRecords();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('[data-tab="home"]').classList.add('active');
+      document.querySelectorAll('.navbar a[data-tab]').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          openTab(this.getAttribute('data-tab'));
+        });
+      });
+    });
+  </script>
+</body>
+</html>
